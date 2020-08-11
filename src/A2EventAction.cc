@@ -205,9 +205,9 @@ G4int A2EventAction::PrepareOutput(){
     return 0;
   }
   //if filename try to open the file
-  fOutFile=new TFile(fOutFileName,"CREATE");
+  fOutFile=new TFile(fOutFileName,"RECREATE");
   //if file aready exists make a new name by adding XXXA2copy#.root
-  while (!fOutFile->IsOpen()){
+/*  while (!fOutFile->IsOpen()){
     int pos1=fOutFileName.Index("A2copy");
     int pos2= fOutFileName.Index(".root");
  
@@ -232,6 +232,7 @@ G4int A2EventAction::PrepareOutput(){
     fOutFile=new TFile(fOutFileName,"CREATE");
     
   }
+*/
   //  while (!fOutFile->IsOpen()){
   //   G4cout<<"A2EventAction::PrepareOutput() Output File already exists do you want to overwrite? y/n"<<G4endl;
   //   G4String ans;
