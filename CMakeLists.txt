@@ -24,6 +24,14 @@ else()
   find_package(Geant4 REQUIRED)
 endif()
 
+# In Geant4 > 10.6 the preprocessing macros for excluding UI and VIS
+# are not available anymore. Preprocess variable GEANT4_GT_10_6
+# is used to exclude checks on UI and VIS in A2.cc file.
+if ( Geant4_VERSION GREATER_EQUAL 10.6 )
+  message(STATUS "Configuring A2Geant4 for Geant4 version >= 10.6")
+  add_compile_definitions(GEANT4_GT_10_6=1)
+endif()
+
 # define variables
 set(EXT_LIBRARIES)
 

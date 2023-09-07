@@ -17,11 +17,16 @@
 #include "G4UIQt.hh"
 #include "G4Qt.hh"
 #endif
+#ifdef GEANT4_GT_10_6
+#include "G4VisExecutive.hh"
+#include "G4UIExecutive.hh"
+#else
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
 #endif
 #ifdef G4UI_USE
 #include "G4UIExecutive.hh"
+#endif
 #endif
 
 #include "A2DetectorConstruction.hh"

@@ -49,7 +49,7 @@ August 17, 2018
 ## Installation
 
 ### Dependencies
-* Geant4 10.2/10.3/10.4/10.5
+* Geant4 10.2/10.3/10.4/10.5/10.6/10.7
 * ROOT 5 or 6
 * CMake 3.3
 * Optional: Qt 4 or 5
@@ -69,8 +69,11 @@ tar xvfz geant4.10.04.p02.tar.gz
 Create a build directory (not inside the source directory) and run cmake. Set
 CMAKE_INSTALL_PREFIX to the final installation location and GEANT4_USE_QT to ON
 if you want to use the graphical user interface. Set GEANT4_INSTALL_DATA to ON
-so the large data packages will be downloaded automatically. Set N to the number
-of CPU cores to speed up the compilation process:
+so the large data packages will be downloaded automatically.
+Modern versions of ROOT require at least C++-14. In such cases, you need to
+tell the compiler to use C++-14 standards here as well, by adding
+-DCMAKE_CXX_STANDARD=14 to the cmake line.
+Set N to the number of CPU cores to speed up the compilation process:
 ```
 cd /tmp
 mkdir build
