@@ -12,12 +12,12 @@
 ##3 = EPGA_Overlap      Spezialmodus für Overlap/Debugging
 
 /A2/generator/Mode 1
-/A2/generator/SetTMax 5 MeV
+/A2/generator/SetTMax 21 MeV
 /A2/generator/SetTMin 20 MeV
-/A2/generator/SetThetaMin 0.0 deg
-/A2/generator/SetThetaMax 180.0 deg
-/A2/generator/SetPhiMin 0.0 deg
-/A2/generator/SetPhiMax 180.0 deg
+/A2/generator/SetThetaMin 89.0 deg
+/A2/generator/SetThetaMax 90.0 deg
+/A2/generator/SetPhiMin 85.0 deg
+/A2/generator/SetPhiMax 95.0 deg
 /A2/generator/SetBeamXSigma 0 mm
 /A2/generator/SetBeamYSigma 0 mm
 /A2/generator/SetTargetZ0 0 mm
@@ -39,4 +39,4 @@
 #/gun/particle proton
 #/gun/particle neutron
 /gun/particle alpha
-/run/beamOn 100
+/run/beamOn 10

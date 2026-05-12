@@ -1,5 +1,5 @@
 ##Use the crystal ball?
-/A2/det/useCB 0
+/A2/det/useCB 1
 #if the 3rd number in the next line is negative use old geometry,
 # if positive use new Prakhov geometry
 #the first two numbers give the upper and lower air gap between hemispheres
@@ -47,12 +47,12 @@
 #/A2/det/useTarget Cryo2
 #/A2/det/useTarget CryoHe3
 #/A2/det/useTarget ActiveHe3
-/A2/det/useTarget TPC
+#/A2/det/useTarget TPC
 #/A2/det/targetMaterial G4_lH2
-/A2/det/targetMaterial A2_lHe3
+/A2/det/targetMaterial A2_lHe4
 #/A2/det/targetMaterial He4ActiveGas
-#/A2/det/setTargetLength 10 cm
-#/A2/det/setTargetZ 0. cm
+/A2/det/setTargetLength 5 cm
+/A2/det/setTargetZ 0. cm
 ####Solid targets
 #/A2/det/useTarget Solid
 #/A2/det/useTarget Solid_Generic

@@ -62,11 +62,23 @@ G4bool A2DriftModel::ModelTrigger(const G4FastTrack& fastTrack){
 /***** This function contains the main operation of the model *****/
 void A2DriftModel::DoIt(const G4FastTrack& fastTrack, G4FastStep& fastStep){
 	//get all relevant step data from the track
-	G4ThreeVector direction = fastTrack.GetPrimaryTrack()->GetMomentumDirection();
-	G4ThreeVector worldPosition = fastTrack.GetPrimaryTrack()->GetPosition()/mm;
-	G4double ekin = fastTrack.GetPrimaryTrack()->GetKineticEnergy()/keV;
-	G4double time = fastTrack.GetPrimaryTrack()->GetGlobalTime();
-	G4String particleName = fastTrack.GetPrimaryTrack()->GetParticleDefinition()->GetParticleName();
+	const G4Track* track = fastTrack.GetPrimaryTrack();
+	G4ThreeVector direction = track->GetMomentumDirection();
+	G4ThreeVector worldPosition = track->GetPosition()/mm;
+	G4double ekin = track->GetKineticEnergy()/keV;
+	G4double time = track->GetGlobalTime();
+	G4String particleName = track->GetParticleDefinition()->GetParticleName();
+	// const G4Event* event = G4EventManager::GetEventManager()->GetConstCurrentEvent();
+	// G4cout << "TPC drift trigger: event="
+	//        << (event ? event->GetEventID() : -1)
+	//        << " track=" << track->GetTrackID()
+	//        << " ekin=" << ekin << " keV"
+	//        << " globalTime=" << time/ns << " ns"
+	//        << " pos=("
+	//        << worldPosition.x() << ", "
+	//        << worldPosition.y() << ", "
+	//        << worldPosition.z() << ") mm"
+	//        << G4endl;
 	//make sure the electron is in a position to be transported
 	G4bool position = true; //it normally will be
 	if (worldPosition.z() < -115.5) position = false; //electron already past anode
@@ -75,7 +87,8 @@ void A2DriftModel::DoIt(const G4FastTrack& fastTrack, G4FastStep& fastStep){
 	if (position == true){
 		Transport(fastStep, fastTrack, particleName, ekin, time, worldPosition.x(), worldPosition.y(), worldPosition.z(), direction.x(), direction.y(), direction.z());
 	}
-	}
+
+		}
 
 //Generate electron position, time when reaching anode
 void A2DriftModel::Transport(G4FastStep& fastStep,const G4FastTrack& fastTrack, G4String particleName, double ekin_keV, double t, double x_mm, double y_mm, double z_mm, double dx, double dy, double dz){
@@ -98,6 +111,11 @@ void A2DriftModel::Transport(G4FastStep& fastStep,const G4FastTrack& fastTrack, 
 	G4double x_pos = gaussian.shoot(mean_x,sigma_diff); //calculate an x position: mm
 	G4double y_pos = gaussian.shoot(mean_y,sigma_diff); //calc y mm
 	G4double time = gaussian.shoot(mean_t,sigma_time); //calc a time ms
+	// G4cout << "TPC parametrized drift: pathLength=" << abs(pathLength) << " mm"
+	//        << " driftTime=" << time << " ms"
+	//        << " finalPos=(" << x_pos << ", " << y_pos << ", "
+	//        << z_pos << ") mm"
+	//        << G4endl;
 
 	//combine position data into a vector
 	G4ThreeVector position = G4ThreeVector(x_pos*mm,y_pos*mm,z_pos*mm);
@@ -112,6 +130,16 @@ void A2DriftModel::Transport(G4FastStep& fastStep,const G4FastTrack& fastTrack, 
 	fastStep.SetPrimaryTrackFinalPosition(position); //final calculated position
 	fastStep.SetTotalEnergyDeposited(ekin_keV*keV); //deposit all energy
 	
+//G4cout << "TPC parametrized drift: "
+//       << " pathLength=" << abs(pathLength) << " mm"
+//       << " driftTime=" << time << " ms"
+//       << " finalPos=(" << x_pos << ", " << y_pos << ", "
+//       << z_pos << ") mm"
+//       << G4endl;
+
+
+
+
 	/**** kill step and call hit ****/
 	ProcessHit(fastTrack,position,ekin_keV,time);
 	fastStep.KillPrimaryTrack();
@@ -173,7 +201,7 @@ void A2DriftModel::SetConstants(G4Region *gasRegion){
 		G4double v[6]={7825,5445,4498,3940,3540,3235};
 		G4double dl[6]={0.0421,0.0310,0.0259,0.0236,0.0215,0.0202};
 		G4double dt[6]={0.0591,0.0447,0.0370,0.0329,0.0294,0.0275};
-	for (G4int i=0; i>6; i++){
+	for (G4int i=0; i<6; i++){
 		if (pressure == p_bar[i]){ //if pressure at exact point
 			drift_vel = v[i]; //use exact values
 			trans_diff = dt[i];
@@ -193,7 +221,7 @@ void A2DriftModel::SetConstants(G4Region *gasRegion){
 		G4double v[6]={7680,5297,4367,3830,3437,3145};
 		G4double dl[6]={0.0433,0.0321,0.0266,0.0243,0.0220,0.0209};
 		G4double dt[6]={0.0601,0.0462,0.0381,0.0332,0.0307,0.0289};
-		for (G4int i=0; i>6; i++){
+		for (G4int i=0; i<6; i++){
 			if (pressure == p_bar[i]){ //if pressure at exact point
 				drift_vel = v[i]; //use exact values
 				trans_diff = dt[i];
