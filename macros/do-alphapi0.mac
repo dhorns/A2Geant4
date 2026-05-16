@@ -32,7 +32,7 @@
 /A2/generator/Track 2
 #/A2/generator/Track 3
 #Open the file and set up the ntuple for reading
-/A2/generator/InputFile /home/ostrick/A2/acqu/acqu_user/MC-Output.root
+/A2/generator/InputFile /home/ostrick/A2/Simulation/AcquMC-Output/AcquMC-Output-50.root
 #####Output
 #Open the output file for writing
-/A2/event/setOutputFile Geant_4He_pi0.root
+/A2/event/setOutputFile /home/ostrick/A2/Simulation/Geant-Out/Geant-Output-50.root
