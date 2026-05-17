@@ -3,13 +3,12 @@
 #Choose a physics list, for a full listing type /A2/physics/ListPhysics
 #/A2/physics/Physics QGSP_BIC
 #/A2/physics/Physics QGSP_BERT_CHIPS
-
+###### Standard sind:
+###### QGSP_BERT + OpticalPhysics + G4EmLivermorePhysics + G4FastSimulationPhysics
 ####Initialise
-#/run/verbose 1
-/run/initialize
-#/A2/physics/CutEl 0.01 mm
-#/A2/physics/CutsAll 0.01 mm
-
+# /A2/physics/CutEl 0.1 mm
+#/A2/physics/CutsAll 0.1 mm
+#alle Teilchen default 
 #/A2/physics/SetRegion CB
 #/A2/physics/RegionCut  0.1 mm
 #/A2/physics/SetRegion TAPS
@@ -20,6 +19,20 @@
 #/A2/physics/RegionCut 0.01 mm
 #/A2/physics/SetRegion MWPC
 #/A2/physics/RegionCut 0.1 mm
+
+
+
+#/run/setCut 0.1 mm
+
+#/run/setCutForRegion CB 0.1 mm
+#/run/setCutForAGivenParticle gamma 0.1 mm
+#/run/setCutForAGivenParticle e-    0.01 mm
+#/run/setCutForAGivenParticle e+    0.01 mm
+#/run/setCutForAGivenParticle proton 0.1 mm
+
+#/run/verbose 1
+/run/initialize
+
 
 ##the initial random number seed
 /A2/generator/Seed 1111111
@@ -32,7 +45,7 @@
 /A2/generator/Track 2
 #/A2/generator/Track 3
 #Open the file and set up the ntuple for reading
-/A2/generator/InputFile /home/ostrick/A2/Simulation/AcquMC-Output/AcquMC-Output-50.root
+/A2/generator/InputFile /home/ostrick/A2/Simulation/AcquMC-Output/AcquMC-140-700.root
 #####Output
 #Open the output file for writing
-/A2/event/setOutputFile /home/ostrick/A2/Simulation/Geant-Out/Geant-Output-50.root
+/A2/event/setOutputFile /home/ostrick/A2/Simulation/Geant-Out/Geant-140-700.root
