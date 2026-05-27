@@ -1,0 +1,23 @@
+Changes made by ACP for incorporation of TPC
+
+Many of these have not been tracked in individual commits on GitHub
+
+14.05.21: Created A2Target A2TPC, changed A2DetectorSetup to support A2TPC
+18.05.21: Added data file TPC.dat to contain TPC dimensions
+20.05.21: Fixed TPC dimensions, added wire mesh
+07.06.21: Updated A2Hit and A2SD to support charge collection, implemented AnodeSD in A2TPC, added anode readout in A2CBOutput
+16.06.21: Added kinetic energy branch klab to A2CBOutput for use in energy calibrations
+24.06.21: Created custom G4Field A2ElectricField to implement a uniform electric field in A2TPC
+07.07.21: Created custom G4FastSimulationModel A2DriftModel for low energy electron drift, attached model to active gas in A2TPC, added code to call model when applicable in A2SteppingAction, registered G4FastSimulationPhysics and G4EmLivermorePhysics with the physics list in A2.cc
+21.07.21: Edited production cuts for RegionActiveGas in A2TPC
+28.07.21: Programmed drift time and coordinates in A2DriftModel based on Gaussians using drift velocity and diffusion parameters from Magboltz.
+29.07.21: Set separate TPC ADC gate in A2SD, fixed copy numbers to allow for customization of anode sections.
+19.09.21: Fixed bugs in A2DriftModel and definition of helium in A2TPC.
+08.10.21: Customized time recording for TPC in A2SD, helped in theta reconstruction.
+08.11.21: Fixed bug in A2SteppingAction to allow A2DriftModel to apply even for electrons with kinetic energy zero.
+25.11.21: Added drift constants for 10, 15 bar pressure
+02.12.21: Added option in data/TPC.dat to specify the outer edge of each anode section 
+Previously segmentation was determined by anode radius and number of sections
+Added approximations for drift constants at intermediate pressures
+
+27.05.26: Adding CATS to the simulation
