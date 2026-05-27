@@ -9,7 +9,7 @@
 #/A2/det/setCBCrystGeo extr
 
 ##Use TAPS?
-/A2/det/useTAPS 0
+/A2/det/useTAPS 1
 /A2/det/setTAPSFile data/taps07.dat
 /A2/det/setTAPSZ 146.35 cm
 #/A2/det/setTAPSZ 188 cm
@@ -27,7 +27,7 @@
 ##Use MWPC
 #set to 1 to not create the anode wires, 2 to create the anode wires
 #add 0 to disable the readout (e.g., 10, 20)
-/A2/det/useMWPC 1
+/A2/det/useMWPC 2
 
 ##Use Cherenkov?
 /A2/det/useCherenkov 0
@@ -40,20 +40,27 @@
 /A2/det/usePizza 0
 #/A2/det/setPizzaZ 162 cm
 
+##Use CATS
+/A2/det/useCATS 0
+
+#
 ##Set the target
+#
 ###Cryo targets : Cryo (larger cell), Cryo2 (narrower cell), CryoHe3 (He3/He4 target)
 ###Materials: G4_lH2, A2_lD2, A2_lHe3, A2_lHe4
-#/A2/det/useTarget Cryo
+/A2/det/useTarget Cryo
 #/A2/det/useTarget Cryo2
-/A2/det/useTarget CryoHe3
+#/A2/det/useTarget CryoHe3
 #/A2/det/useTarget ActiveHe3
 #/A2/det/useTarget TPC
-#/A2/det/targetMaterial G4_lH2
-/A2/det/targetMaterial A2_lHe4
+/A2/det/targetMaterial G4_lH2
+#/A2/det/targetMaterial A2_lHe4
 #/A2/det/targetMaterial He4ActiveGas
 /A2/det/setTargetLength 5 cm
 /A2/det/setTargetZ 0. cm
+#
 ####Solid targets
+#
 #/A2/det/useTarget Solid
 #/A2/det/useTarget Solid_Generic
 #/A2/det/useTarget Solid_Oct_18
@@ -61,7 +68,9 @@
 #/A2/det/targetMaterial G4_GRAPHITE
 #/A2/det/targetMaterial G4_Li
 #/A2/det/targetMaterial G4_Ca
+#
 #####Polarised target
+#
 #/A2/det/useTarget Polarized
 #/A2/det/targetMaterial A2_HeButanol
 #/A2/det/targetMaterial A2_HeDButanol
@@ -69,4 +78,10 @@
 #/A2/det/targetMagneticCoils Saddle
 #/A2/det/setTargetMagneticFieldMap data/wouter_field_map.dat.xz
 #/A2/det/setTargetMagneticFieldMap data/field_map_jul_13_pos.dat.xz
-
+#
+### For CATS
+#
+#/A2/det/useTarget Solid_Generic
+#/A2/det/targetMaterial G4_GRAPHITE
+#/A2/det/setTargetLength 5. cm
+#/A2/det/setTargetZ 0. cm

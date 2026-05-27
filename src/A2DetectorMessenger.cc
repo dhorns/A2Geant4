@@ -34,7 +34,12 @@ A2DetectorMessenger::A2DetectorMessenger(
   //fUseTAPSCmd->SetRange("UseTAPS=0 don't build TAPS or UseTAPS!=0 build TAPS");
   fUseTAPSCmd->AvailableForStates(cmdState,G4State_Idle);
 
-
+   //Vincent Edit
+  fUseCATSCmd = new G4UIcmdWithAnInteger("/A2/det/useCATS",this);
+  fUseCATSCmd->SetGuidance("Construct CATS");
+  fUseCATSCmd->SetParameterName("UseCATS", false);
+  fUseCATSCmd->AvailableForStates(cmdState,G4State_Idle);
+ 
   fUseCBCmd = new G4UIcmdWithAnInteger("/A2/det/useCB",this);
   fUseCBCmd->SetGuidance("Construct CB");
   fUseCBCmd->SetParameterName("UseCB",false);
@@ -180,6 +185,7 @@ A2DetectorMessenger::~A2DetectorMessenger()
 {
   delete fUseTAPSCmd;
   delete fUseCBCmd;
+  delete fUseCATSCmd;
   delete fUsePIDCmd;
   delete fUseTargetCmd;
   delete fTargetMatCmd;
@@ -205,8 +211,6 @@ A2DetectorMessenger::~A2DetectorMessenger()
   delete fCBCrystGeoCmd;
  }
 
-
-
 void A2DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
 { 
 
@@ -220,6 +224,8 @@ void A2DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
   if( command == fUsePIDCmd )
     { fA2Detector->SetUsePID(fUsePIDCmd->GetNewIntValue(newValue));}
 
+  if( command == fUseCATSCmd )
+    { fA2Detector->SetUseCATS(fUseCATSCmd->GetNewIntValue(newValue));}
 
   if( command == fUseMWPCCmd )
     { fA2Detector->SetUseMWPC(fUseMWPCCmd->GetNewIntValue(newValue));}

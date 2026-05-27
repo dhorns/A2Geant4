@@ -21,6 +21,7 @@
 #include "G4VVisManager.hh" //track visualization
 #include "CLHEP/Random/RandGauss.h" //random generation
 #include "TSpline.h"
+#include "G4String.hh"
 
 using namespace CLHEP;
 
@@ -125,10 +126,11 @@ void A2DriftModel::Transport(G4FastStep& fastStep,const G4FastTrack& fastTrack, 
 	//G4cout<<"r="<<sqrt(x_mm*x_mm+y_mm*y_mm)<<"mm to r="<<sqrt(x_pos*x_pos+y_pos*y_pos)<<"mm in "<<time<<" ms"<<G4endl;
 	
 	/**** set final track parameters *****/
-	fastStep.SetPrimaryTrackFinalProperTime(time);
-	fastStep.SetPrimaryTrackPathLength(pathLength*mm); //travel calculated distance
-	fastStep.SetPrimaryTrackFinalPosition(position); //final calculated position
-	fastStep.SetTotalEnergyDeposited(ekin_keV*keV); //deposit all energy
+//	fastStep.SetPrimaryTrackFinalProperTime(time);
+	fastStep.ProposePrimaryTrackFinalProperTime(time);
+	fastStep.ProposePrimaryTrackPathLength(pathLength*mm); //travel calculated distance
+	fastStep.ProposePrimaryTrackFinalPosition(position); //final calculated position
+	fastStep.ProposeTotalEnergyDeposited(ekin_keV*keV); //deposit all energy
 	
 //G4cout << "TPC parametrized drift: "
 //       << " pathLength=" << abs(pathLength) << " mm"
@@ -197,7 +199,7 @@ void A2DriftModel::SetConstants(G4Region *gasRegion){
 	G4double p_bar[6]={5,10,15,20,25,30}; //supported pressures
 	drift_vel=trans_diff=long_diff=0; //initialize
 	//set the correct set of constants for helium isotope
-	if (name.contains("3")){ //helium-3
+	if (G4StrUtil::contains(name, "3")){ //helium-3
 		G4double v[6]={7825,5445,4498,3940,3540,3235};
 		G4double dl[6]={0.0421,0.0310,0.0259,0.0236,0.0215,0.0202};
 		G4double dt[6]={0.0591,0.0447,0.0370,0.0329,0.0294,0.0275};

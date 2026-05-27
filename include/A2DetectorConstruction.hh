@@ -16,6 +16,7 @@
 #include "A2DetMWPC.hh"
 #include "A2DetCherenkov.hh"
 #include "A2DetPizza.hh"
+#include "A2DetCATS.hh"
 
 class G4Box;
 class G4LogicalVolume;
@@ -46,8 +47,11 @@ class A2DetectorConstruction : public G4VUserDetectorConstruction
   void SetUseMWPC(G4int use){fUseMWPC=use;}
   void SetUseCherenkov(G4int use){fUseCherenkov=use;}
   void SetUsePizza(G4int use){fUsePizza=use;}
+  void SetUseCATS(G4int use){fUseCATS=use;}
 
   G4int GetUseMWPC() const { return fUseMWPC; }
+  G4int GetUsePizza() const { return fUsePizza; }
+  G4int GetUseCATS() const { return fUseCATS; }
 
   void SetUseTarget(G4String use){fUseTarget=use;}
   void SetTargetMaterial(G4String mat){fTargetMaterial=G4NistManager::Instance()->FindOrBuildMaterial(mat);}
@@ -99,6 +103,7 @@ public:
   A2DetTOF* fTOF;   //MWPC detector
   A2DetCherenkov* fCherenkov; //Cherenkov detector
   A2DetPizza* fPizza; // Pizza detector
+  A2DetCATS* fCATS; // CATS detector
 
   G4ThreeVector fHemiGap;
   G4String fCBCrystGeometry;
@@ -122,6 +127,7 @@ public:
   G4int fUseTOF;  //Build the TOF wall
   G4int fUseCherenkov; //Build the Cherenkov
   G4int fUsePizza; //Build the Pizza detector
+  G4int fUseCATS; //Build the CATS detector
 
   G4String fTOFparFile; //TOF setup configuration
   

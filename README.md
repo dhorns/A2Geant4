@@ -12,6 +12,17 @@ A2 Geant4 simulation
 
 ## Release notes
 
+### 0.5.0
+2026
+* updated to add CATS
+* work by MTA summer students (V. Bruening, L. Hubbert, G. Borden, and DLH)
+
+### 0.4.0
+2021
+* updated to add TPC
+* work by A. Postuma
+* see change_log.txt in docs directory
+
 ### 0.3.0
 September 23, 2019
 * support for GiBUU event-files

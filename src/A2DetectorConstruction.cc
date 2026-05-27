@@ -30,6 +30,7 @@
 #include "A2ActiveHe3.hh"
 #include "A2DetPID.hh"
 #include "A2DetPID3.hh"
+#include "A2DetCATS.hh"
 
 using namespace CLHEP;
 
@@ -48,12 +49,14 @@ A2DetectorConstruction::A2DetectorConstruction(G4String detSet)
   fUseTOF=0;
   fUseCherenkov=0;
   fUsePizza=0;
+  fUseCATS=0;
 
   fCrystalBall=NULL;
   fTAPS=NULL;
   fPID=NULL;
   fMWPC=NULL;
   fTOF=NULL;
+  fCATS=NULL;
   fWorldSolid=NULL;
   fWorldLogic=NULL;
   fWorldPhysi=NULL;
@@ -102,13 +105,14 @@ G4VPhysicalVolume* A2DetectorConstruction::Construct()
   fUseTOF=0;
   fUseCherenkov=0;
   fUsePizza=0;
+  fUseCATS=0;
 
   // read the set up file DetectorSetup.mac
   // get the pointer to the User Interface manager 
   G4UImanager* UI = G4UImanager::GetUIpointer();
   G4String command = "/control/execute "+fDetectorSetup;//macros/DetectorSetup.mac";
   UI->ApplyCommand(command);
-  if(fUseCB==0&&fUseTAPS==0&&fUsePID==0&&fUseMWPC==0&&fUseTOF==0&&fUseCherenkov==0&&fUsePizza==0&&fUseTarget==G4String("NO")){
+  if(fUseCB==0&&fUseTAPS==0&&fUsePID==0&&fUseCATS==0&&fUseMWPC==0&&fUseTOF==0&&fUseCherenkov==0&&fUsePizza==0&&fUseTarget==G4String("NO")){
     G4cout<<"G4VPhysicalVolume* A2DetectorConstruction::Construct() Don't seem to be simulating any detectors, please check you are using an appopriate detector setup. I tried the file "<<fDetectorSetup<< " I will exit here before the computer explodes"<<G4endl;
     exit(0);
   }
@@ -168,6 +172,15 @@ G4VPhysicalVolume* A2DetectorConstruction::Construct()
     fTAPS->SetIsInteractive(fIsInteractive);
     fTAPS->Construct(fWorldLogic);
   }
+
+  if(fUseCATS){
+  G4cout<<"A2DetectorConstruction::Construct() CATS:)"<<G4endl;
+  fCATS= new A2DetCATS();
+  fCATS->SetIsInteractive(fIsInteractive);
+  fCATS->Construct(fWorldLogic);
+	}
+  
+
   if(fUsePID){
     G4cout<<"A2DetectorConstruction::Construct() Take the pid "<< fUsePID<<G4endl;
     if(fUsePID==1)

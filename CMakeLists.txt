@@ -1,6 +1,6 @@
 #----------------------------------------------------------------------------
 # Setup the project
-cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(A2Geant4)
 
 # workaround for ubuntu: check if gold linker is available and use it

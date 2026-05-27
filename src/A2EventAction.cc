@@ -17,6 +17,7 @@
 #include "G4UImanager.hh"
 #include "CLHEP/Units/SystemOfUnits.h"
 #include "G4Version.hh"
+#include "G4String.hh"
 
 #include "Randomize.hh"
 #include "TString.h"
@@ -47,7 +48,7 @@ A2EventAction::A2EventAction(A2RunAction* run, A2PrimaryGeneratorAction* pga,
   fOutTree=NULL;
   fOutFileName=TString("");
 
-  fprintModulo=10;
+  fprintModulo=1000;
   fTimer = new TStopwatch();
   fCBOut=NULL;
   fOverwriteFile=false;
@@ -85,19 +86,18 @@ void A2EventAction::BeginOfEventAction(const G4Event* evt)
 void A2EventAction::EndOfEventAction(const G4Event* evt)
 {
   G4int evtNb = evt->GetEventID();
-  G4int eventsDone = evtNb + 1;
-  if (fprintModulo > 0 && eventsDone % fprintModulo == 0)
+  if (evtNb && evtNb % fprintModulo == 0)
   {
     //CLHEP::HepRandom::showEngineStatus();
-    fEventRate = eventsDone / fTimer->RealTime();
+    fEventRate = evtNb / fTimer->RealTime();
     fTimer->Continue();
-    G4cout << TString::Format("%7d events tracked (%.2f events/s)", eventsDone, fEventRate);
+    G4cout << TString::Format("%7d events tracked (%.2f events/s)", evtNb, fEventRate);
     if (fPGA->GetMode() == EPGA_FILE)
     {
       TString timeFmt;
-      FormatTimeSec((fReqEvents - eventsDone) / (Double_t)fEventRate, timeFmt);
+      FormatTimeSec((fReqEvents - evtNb) / (Double_t)fEventRate, timeFmt);
       G4cout << TString::Format(", %s remaining for %d/%d events",
-                timeFmt.Data(), fReqEvents-eventsDone, fReqEvents) << G4endl;
+                timeFmt.Data(), fReqEvents-evtNb, fReqEvents) << G4endl;
     }
     else
       G4cout << G4endl;
@@ -132,7 +132,8 @@ void A2EventAction::EndOfEventAction(const G4Event* evt)
       //if(!hc)continue; //no hits in that detector
       G4int hc_nhits=hc->entries();
       //      if(hc->GetName()=="A2SDHitsVisCBSD"){
-      if(hc->GetName().contains("Vis")){
+//      if(hc->GetName().contains("Vis")){
+		if(G4StrUtil::contains(hc->GetName(),"Vis")) {
 	//	G4cout<<hc_nhits <<" hits"<<G4endl;
 	for(G4int ii=0;ii<hc_nhits;ii++){
 	  A2VisHit* hit=static_cast<A2VisHit*>(hc->GetHit(ii));
@@ -206,8 +207,10 @@ G4int A2EventAction::PrepareOutput(){
     return 0;
   }
   //if filename try to open the file
-  fOutFile=new TFile(fOutFileName,"CREATE");
+  fOutFile=new TFile(fOutFileName,"RECREATE");
+//  fOutFile=new TFile(fOutFileName,"CREATE");
   //if file aready exists make a new name by adding XXXA2copy#.root
+/*
   while (!fOutFile->IsOpen()){
     int pos1=fOutFileName.Index("A2copy");
     int pos2= fOutFileName.Index(".root");
@@ -233,6 +236,7 @@ G4int A2EventAction::PrepareOutput(){
     fOutFile=new TFile(fOutFileName,"CREATE");
     
   }
+*/
   //  while (!fOutFile->IsOpen()){
   //   G4cout<<"A2EventAction::PrepareOutput() Output File already exists do you want to overwrite? y/n"<<G4endl;
   //   G4String ans;
@@ -379,7 +383,8 @@ void A2EventAction::ReadDetectorSetup(const char* detSetup)
   file.open(detSetup);
   if (file.is_open())
   {
-    while (line.readLine(file))
+//    while (line.readLine(file))
+    while (std::getline(file,line))
     {
       if (line[0] == '#') continue;
       fDetSetup += "                            ";
@@ -390,3 +395,4 @@ void A2EventAction::ReadDetectorSetup(const char* detSetup)
     file.close();
   }
 }
+

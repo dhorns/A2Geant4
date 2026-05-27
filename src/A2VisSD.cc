@@ -67,7 +67,8 @@ G4bool A2VisSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
   G4int id;
   //Get element copy number
   //TAPS volume  is contained in COVR which is the multiple placed volume!
-  if(volume->GetName().contains("TAPS")||volume->GetName().contains("PbWO"))id=mothervolume->GetCopyNo()+volume->GetCopyNo();
+//  if(volume->GetName().contains("TAPS")||volume->GetName().contains("PbWO"))id=mothervolume->GetCopyNo()+volume->GetCopyNo();
+  if((G4StrUtil::contains(volume->GetName(),"TAPS"))||(G4StrUtil::contains(volume->GetName(),"PbWO")))id=mothervolume->GetCopyNo()+volume->GetCopyNo();
   else id = volume->GetCopyNo();
   //  G4cout<<volume->GetName()<<" id "<<id <<" "<<volume->GetCopyNo()<<" "<<mothervolume->GetCopyNo()<<" edep "<<edep/MeV<<G4endl;
 
