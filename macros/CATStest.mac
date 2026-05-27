@@ -1,0 +1,8 @@
+#Macros to test CATS detector
+/run/initialize 
+/gun/particle gamma
+/gun/position 0 0 0 
+/gun/direction 0 0 1
+/gun/energy 100 MeV
+/run/beamOn 1000
+/A2/event/setOutputFile CATStest.root

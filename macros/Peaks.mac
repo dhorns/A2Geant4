@@ -1,0 +1,35 @@
+####Initialise
+/run/initialize
+########
+##initialize generator settings
+##copy from Phil's AHeT code
+/A2/generator/Mode 1
+##kinetic energy: for same energy set min=max
+/A2/generator/SetTMin 400 MeV
+/A2/generator/SetTMax 400 MeV
+##where the events originate from
+##essentially setting gun position
+/A2/generator/SetTargetZ0 0 cm
+/A2/generator/SetTargetThick 0.1 cm
+/A2/generator/SetTargetRadius 0.1 cm
+##angles: like setting gun direction
+/A2/generator/SetThetaMin 0 deg
+/A2/generator/SetThetaMax 1 deg
+#/A2/generator/SetPhiMin 0 deg
+#/A2/generator/SetPhiMax 1 deg
+
+##gun settings to choose particle
+/gun/particle gamma
+/gun/position 0 0 0
+/gun/direction 0 0 1
+
+/A2/event/setOutputFile out/CATS.root
+/run/beamOn 61000
+
+
+#/A2/generator/SetTMin 495 MeV
+#/A2/generator/SetTMax 495 MeV
+/A2/generator/SetTMin 395560 keV #try 495.6 next time
+/A2/generator/SetTMax 395560 keV
+/A2/event/setOutputFile out/CATS.root
+/run/beamOn 39000
