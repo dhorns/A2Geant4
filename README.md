@@ -70,39 +70,25 @@ August 17, 2018
 
 #### Installation of Geant4
 
-Download the source tarball from https://geant4.web.cern.ch and extract it
-in a temporary directory:
-```
-cd /tmp
-wget https://geant4-data.web.cern.ch/geant4-data/releases/geant4.10.04.p02.tar.gz
-tar xvfz geant4.10.04.p02.tar.gz
-```
-Create a build directory (not inside the source directory) and run cmake. Set
-CMAKE_INSTALL_PREFIX to the final installation location and GEANT4_USE_QT to ON
-if you want to use the graphical user interface. Set GEANT4_INSTALL_DATA to ON
-so the large data packages will be downloaded automatically. Set N to the number
-of CPU cores to speed up the compilation process:
-```
-cd /tmp
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/Geant4.10.04.02 -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_QT=ON /tmp/geant4.10.04.p02
-make -jN
-make install
-```
-Geant4 should now be installed in /opt/Geant4.10.04.02. Source the configuration script
-(geant4.sh for bash, geant4.csh for C shell)
-in your shell config file to set all the environment variables:
-```
-source /opt/Geant4.10.04.02/bin/geant4.sh
-```
-The temporary source and build directories can now be deleted.
-More details can be found in the official
-[documentation](http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/InstallationGuide/html/gettingstarted.html).
+cd ~/opt
+git clone https://github.com/Geant4/geant4 geant4_src
+mkdir geant4_build
+cd geant4_build
+cmake -DCMAKE_INSTALL_PREFIX=/opt/geant4 -DGEANT4_INSTALL_DATADIR=/opt/geant4-data -DGEANT4_USE_OPENGL_X11=ON -DGEANT4_USE_QT=ON -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_GDML=ON ../geant4_src
+make -j4
+sudo make install
+cd ..
+rm -rf geant4_*
 
+Geant4 should now be installed in /opt/geant4. Source the configuration script
+(geant4.sh for bash, geant4.csh for C shell) in your shell config file to set
+all the environment variables:
+```
+source /opt/geant4/bin/geant4.sh
+```
 #### Method 1: Getting the git master branch
 ```
-cd /some/directory
+cd ~/opt
 git clone https://github.com/A2-Collaboration/A2Geant4.git
 cd A2Geant4
 mkdir build
@@ -229,6 +215,13 @@ Command                             | Meaning
 :-----------------------------------|:-------
 `/A2/det/usePizza 0`                | use the Pizza detector (0=off, 1=on)
 `/A2/det/setPizzaZ 162 cm`          | distance target-Pizza detector
+
+### CATS detector
+Command                             | Meaning
+:-----------------------------------|:-------
+`/A2/det/useCATS 1`                 | use the CATS detector (0=off, 1=on)
+`                                   | at the moment it is hardcoded at 40deg and 1m
+`                                   | all other detectors MUST BE OFF
 
 ### Cryogenic Targets
 Command                          | Meaning
