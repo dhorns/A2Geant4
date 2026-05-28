@@ -70,6 +70,7 @@ August 17, 2018
 
 #### Installation of Geant4
 
+```
 cd ~/opt
 git clone https://github.com/Geant4/geant4 geant4_src
 mkdir geant4_build
@@ -79,6 +80,7 @@ make -j4
 sudo make install
 cd ..
 rm -rf geant4_*
+```
 
 Geant4 should now be installed in /opt/geant4. Source the configuration script
 (geant4.sh for bash, geant4.csh for C shell) in your shell config file to set
@@ -220,8 +222,8 @@ Command                             | Meaning
 Command                             | Meaning
 :-----------------------------------|:-------
 `/A2/det/useCATS 1`                 | use the CATS detector (0=off, 1=on)
-`                                   | at the moment it is hardcoded at 40deg and 1m
-`                                   | all other detectors MUST BE OFF
+                                    | at the moment it is hardcoded at 40deg and 1m
+                                    | all other detectors MUST BE OFF
 
 ### Cryogenic Targets
 Command                          | Meaning
