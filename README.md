@@ -13,7 +13,7 @@ A2 Geant4 simulation
 ## Release notes
 
 ### 0.5.0
-2026
+May 28, 2026
 * updated to add CATS
 * work by MTA summer students (V. Bruening, L. Hubbert, G. Borden, and DLH)
 
