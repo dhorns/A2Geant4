@@ -1,6 +1,4 @@
 #
-# Macro file for the initialization phase of "exampleN03.cc"
-# when running in interactive mode
 #####Pre-Initialisation
 #Choose a physics list, for a full listing type /A2/physics/ListPhysics
 /A2/physics/Physics QGSP_BIC

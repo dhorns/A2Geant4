@@ -15,12 +15,14 @@ A2CBOutput::A2CBOutput()
   fPGA=const_cast<A2PrimaryGeneratorAction*>(static_cast<const A2PrimaryGeneratorAction*>(G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction()));
 
   fDET=const_cast<A2DetectorConstruction*>(static_cast<const A2DetectorConstruction*>(G4RunManager::GetRunManager()->GetUserDetectorConstruction()));
+
   //Need to get the number of initial particles
   fnpart=fPGA->GetNGenMaxParticles();
   if(fnpart>100){
     G4cerr<<"A2CBOutput::A2CBOutput() can only store 100 particles. Need to edit fdircos[100][3] in A2CBOutput.hh if you want more particles."<<G4endl;
     exit(1);
   }
+
   //Get the LorentzVectors of the initial particles
   fGenLorentzVec=(fPGA->GetGenLorentzVecs()); //Only exists if ntuple input
   fBeamLorentzVec=fPGA->GetBeamLorentzVec();//Will take the default beam if no ntuple
@@ -70,107 +72,97 @@ A2CBOutput::A2CBOutput()
 
 A2CBOutput::~A2CBOutput()
 {
-  delete fidpart;
-  delete fplab;
-  delete felab;
-  delete fklab;
-  // for(Int_t i=0;i<fnpart;i++) delete fdircos[i];
-  if(fTree)delete fTree;
+	delete fidpart;
+	delete fplab;
+	delete felab;
+	delete fklab;
+	if(fTree)delete fTree;
+
 }
 
-//Float_t dircos[4][3];
 void A2CBOutput::SetBranches()
 {
 
-  if(!fTree)
-  {
-    G4cout<<"A2CBOutput::SetBranches() Can't set branches have to set fTree first!"<<G4endl;
-    return;
-  }
-  Int_t basket =64000;
+	if(!fTree)
+	{
+		G4cout<<"A2CBOutput::SetBranches() Can't set branches have to set fTree first!"<<G4endl;
+		return;
+	}
+	Int_t basket =64000;
 
-  fTree->Branch("nhits",&fnhits,"fnhits/I",basket);
-  fTree->Branch("npart",&fnpart,"fnpart/I",basket);
-  fTree->Branch("ntaps",&fntaps,"fntaps/I",basket);
-  fTree->Branch("nvtaps",&fnvtaps,"fnvtaps/I",basket);
-  fTree->Branch("vhits",&fvhits,"fvhits/I",basket);
-  fTree->Branch("plab",fplab,"fplab[fnpart]/F",basket);
-  fTree->Branch("tctaps",ftctaps,"ftctaps[fntaps]/F",basket);
-  fTree->Branch("vertex",fvertex,"fvertex[3]/F",basket);
-  fTree->Branch("beam",fbeam,"fbeam[5]/F",basket);
-  fTree->Branch("dircos",fdircos,"fdircos[fnpart][3]/F",basket);
-  fTree->Branch("ecryst",fecryst,"fecryst[fnhits]/F",basket);
-  fTree->Branch("tcryst",ftcryst,"ftcryst[fnhits]/F",basket);
-  fTree->Branch("ectapfs",fectapfs,"fectapfs[fntaps]/F",basket);
-  fTree->Branch("ectapsl",fectapsl,"fectapsl[fntaps]/F",basket);
-  fTree->Branch("elab",felab,"felab[fnpart]/F",basket);
-  fTree->Branch("klab",fklab,"fklab[fnpart]/F",basket);
-  //fTree->Branch("theta",ftheta,"ftheta[fnpart]/F",basket);
-  fTree->Branch("eleak",&feleak,"feleak/F",basket);
-  fTree->Branch("enai",&fenai,"fenai/F",basket);
-  fTree->Branch("etot",&fetot,"fetot/F",basket);
-  fTree->Branch("eveto",feveto,"feveto[fvhits]/F",basket);
-  fTree->Branch("tveto",ftveto,"ftveto[fvhits]/F",basket);
-  fTree->Branch("evtaps",fevtaps,"fevtaps[fnvtaps]/F",basket);
-  fTree->Branch("icryst",ficryst,"ficryst[fnhits]/I",basket);
-  fTree->Branch("ictaps",fictaps,"fictaps[fntaps]/I",basket);
+	// Beam, TAPS, and CB
+	fTree->Branch("nhits",&fnhits,"fnhits/I",basket);
+	fTree->Branch("npart",&fnpart,"fnpart/I",basket);
+	fTree->Branch("ntaps",&fntaps,"fntaps/I",basket);
+	fTree->Branch("nvtaps",&fnvtaps,"fnvtaps/I",basket);
+	fTree->Branch("vhits",&fvhits,"fvhits/I",basket);
+	fTree->Branch("plab",fplab,"fplab[fnpart]/F",basket);
+	fTree->Branch("tctaps",ftctaps,"ftctaps[fntaps]/F",basket);
+	fTree->Branch("vertex",fvertex,"fvertex[3]/F",basket);
+	fTree->Branch("beam",fbeam,"fbeam[5]/F",basket);
+	fTree->Branch("dircos",fdircos,"fdircos[fnpart][3]/F",basket);
+	fTree->Branch("ecryst",fecryst,"fecryst[fnhits]/F",basket);
+	fTree->Branch("tcryst",ftcryst,"ftcryst[fnhits]/F",basket);
+	fTree->Branch("ectapfs",fectapfs,"fectapfs[fntaps]/F",basket);
+	fTree->Branch("ectapsl",fectapsl,"fectapsl[fntaps]/F",basket);
+	fTree->Branch("elab",felab,"felab[fnpart]/F",basket);
+	fTree->Branch("klab",fklab,"fklab[fnpart]/F",basket);
+	//fTree->Branch("theta",ftheta,"ftheta[fnpart]/F",basket);
+	fTree->Branch("eleak",&feleak,"feleak/F",basket);
+	fTree->Branch("enai",&fenai,"fenai/F",basket);
+	fTree->Branch("etot",&fetot,"fetot/F",basket);
+	fTree->Branch("eveto",feveto,"feveto[fvhits]/F",basket);
+	fTree->Branch("tveto",ftveto,"ftveto[fvhits]/F",basket);
+	fTree->Branch("evtaps",fevtaps,"fevtaps[fnvtaps]/F",basket);
+	fTree->Branch("icryst",ficryst,"ficryst[fnhits]/I",basket);
+	fTree->Branch("ictaps",fictaps,"fictaps[fntaps]/I",basket);
 
-  if (fStorePrimaries)
-  {
-    G4cout << "Storing IDs of primary particles" << G4endl;
-    fTree->Branch("pcryst",fpcryst,"fpcryst[fnhits]/I",basket);
-    fTree->Branch("pctaps",fpctaps,"fpctaps[fntaps]/I",basket);
-    fTree->Branch("pveto",fpveto,"fpveto[fvhits]/I",basket);
-    fTree->Branch("pvtaps",fpvtaps,"fpvtaps[fnvtaps]/I",basket);
-  }
+	// TAPS Veto
+	fTree->Branch("ivtaps",fivtaps,"fictaps[fnvtaps]/I",basket);
+	fTree->Branch("idpart",fidpart,"fidpart[fnpart]/I",basket);
+	fTree->Branch("iveto",fiveto,"fiveto[fvhits]/I",basket);
 
-  fTree->Branch("ivtaps",fivtaps,"fictaps[fnvtaps]/I",basket);
-  fTree->Branch("idpart",fidpart,"fidpart[fnpart]/I",basket);
-  fTree->Branch("iveto",fiveto,"fiveto[fvhits]/I",basket);
-
-  if (fDET->GetUseMWPC() && fDET->GetUseMWPC() / 10 == 0)
-  {
-    fTree->Branch("nmwpc",&fnmwpc,"fnmwpc/I",basket);
-    fTree->Branch("imwpc",fimwpc,"fimwpc[fnmwpc]/I",basket);
-    fTree->Branch("mposx",fmposx,"fmposx[fnmwpc]/F",basket);
-    fTree->Branch("mposy",fmposy,"fmposy[fnmwpc]/F",basket);
-    fTree->Branch("mposz",fmposz,"fmposz[fnmwpc]/F",basket);
-    fTree->Branch("emwpc",femwpc,"femwpc[fnmwpc]/F",basket);
-  }
-  else G4cout<<"A2CBOutput::SetBranches() Disabling MWPC readout"<<G4endl;
+	// MWPC
+	if (fDET->GetUseMWPC() && fDET->GetUseMWPC() / 10 == 0)
+	{
+		fTree->Branch("nmwpc",&fnmwpc,"fnmwpc/I",basket);
+		fTree->Branch("imwpc",fimwpc,"fimwpc[fnmwpc]/I",basket);
+		fTree->Branch("mposx",fmposx,"fmposx[fnmwpc]/F",basket);
+		fTree->Branch("mposy",fmposy,"fmposy[fnmwpc]/F",basket);
+		fTree->Branch("mposz",fmposz,"fmposz[fnmwpc]/F",basket);
+		fTree->Branch("emwpc",femwpc,"femwpc[fnmwpc]/F",basket);
+	}
+	else G4cout<<"A2CBOutput::SetBranches() Disabling MWPC readout"<<G4endl;
  
-  // TOF
-  if(fToFTot>0)
-  {
-    fTree->Branch("ntof",&fntof,"fntof/I",basket);
-    fTree->Branch("tofi",ftofi,"ftofi[fntof]/I",basket);
-    fTree->Branch("tofe",ftofe,"ftofe[fntof]/F",basket);
-    fTree->Branch("toft",ftoft,"ftoft[fntof]/F",basket);
-    fTree->Branch("tofx",ftofx,"ftofx[fntof]/F",basket);
-    fTree->Branch("tofy",ftofy,"ftofy[fntof]/F",basket);
-    fTree->Branch("tofz",ftofz,"ftofz[fntof]/F",basket);
-  }
+	// TOF
+	if(fToFTot>0)
+	{
+		fTree->Branch("ntof",&fntof,"fntof/I",basket);
+		fTree->Branch("tofi",ftofi,"ftofi[fntof]/I",basket);
+		fTree->Branch("tofe",ftofe,"ftofe[fntof]/F",basket);
+		fTree->Branch("toft",ftoft,"ftoft[fntof]/F",basket);
+		fTree->Branch("tofx",ftofx,"ftofx[fntof]/F",basket);
+		fTree->Branch("tofy",ftofy,"ftofy[fntof]/F",basket);
+		fTree->Branch("tofz",ftofz,"ftofz[fntof]/F",basket);
+	}
 
-  //NEW
-  //Active He3 target stuff
-  //if(A2Target=="ActiveHe3")
-  //{
-    fTree->Branch("nhe3",&fnhe3,"fnhe3/I",basket);
-    fTree->Branch("ihe3",fihe3,"fihe3[fnhe3]/I",basket);
-    fTree->Branch("ehe3",fehe3,"fehe3[fnhe3]/F",basket);
-    fTree->Branch("the3",fthe3,"fthe3[fnhe3]/F",basket);
-  //}
-  //new 2021
-  //adding tpc based on ahe3
-    fTree->Branch("ntpc",&fntpc,"fntpc/I",basket);
-    fTree->Branch("itpc",fitpc,"fitpc[fntpc]/I",basket);
-    fTree->Branch("qtpc",fqtpc,"fqtpc[fntpc]/F",basket);
-    fTree->Branch("ttpc",fttpc,"fttpc[fntpc]/F",basket);
+	// Active He3
+	fTree->Branch("nhe3",&fnhe3,"fnhe3/I",basket);
+	fTree->Branch("ihe3",fihe3,"fihe3[fnhe3]/I",basket);
+	fTree->Branch("ehe3",fehe3,"fehe3[fnhe3]/F",basket);
+	fTree->Branch("the3",fthe3,"fthe3[fnhe3]/F",basket);
 
-  fTree->Branch("npiz",&fnpiz,"fnpiz/I",basket);
-  fTree->Branch("ipiz",fipiz,"fipiz[fnpiz]/I",basket);
-  fTree->Branch("epiz",fepiz,"fepiz[fnpiz]/F",basket);
-  fTree->Branch("tpiz",ftpiz,"ftpiz[fnpiz]/F",basket);
+	// TPC
+	fTree->Branch("ntpc",&fntpc,"fntpc/I",basket);
+	fTree->Branch("itpc",fitpc,"fitpc[fntpc]/I",basket);
+	fTree->Branch("qtpc",fqtpc,"fqtpc[fntpc]/F",basket);
+	fTree->Branch("ttpc",fttpc,"fttpc[fntpc]/F",basket);
+
+	// Pizza
+	fTree->Branch("npiz",&fnpiz,"fnpiz/I",basket);
+	fTree->Branch("ipiz",fipiz,"fipiz[fnpiz]/I",basket);
+	fTree->Branch("epiz",fepiz,"fepiz[fnpiz]/F",basket);
+	fTree->Branch("tpiz",ftpiz,"ftpiz[fnpiz]/F",basket);
 
 	// CATS
 	if ( fDET->GetUseCATS()) 
@@ -207,7 +199,17 @@ void A2CBOutput::SetBranches()
 
 	}
 
-  if (fIsGiBUU) fTree->Branch("weight",&fweight,"fweight/F",basket);
+	// Store Primaries
+	if (fStorePrimaries)
+	{
+		G4cout << "Storing IDs of primary particles" << G4endl;
+		fTree->Branch("pcryst",fpcryst,"fpcryst[fnhits]/I",basket);
+		fTree->Branch("pctaps",fpctaps,"fpctaps[fntaps]/I",basket);
+		fTree->Branch("pveto",fpveto,"fpveto[fvhits]/I",basket);
+		fTree->Branch("pvtaps",fpvtaps,"fpvtaps[fnvtaps]/I",basket);
+	}
+
+	if (fIsGiBUU) fTree->Branch("weight",&fweight,"fweight/F",basket);
 
 }
 
