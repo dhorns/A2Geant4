@@ -15,6 +15,7 @@ A2 Geant4 simulation
 ### 0.5.0
 May 28, 2026
 * updated to add CATS
+* note that CATS is presently hardcoded to be at 40 degrees and 1.0 m
 * work by MTA summer students (V. Bruening, L. Hubbert, G. Borden, and DLH)
 
 ### 0.4.0
