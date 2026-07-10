@@ -492,6 +492,12 @@ void A2DetectorConstruction::DefineMaterials()
   //
   // Solid targets
   //
+   
+	//
+	// New Stuff - 2026.07.09 - DLH
+	// Lithium 6 and 7
+	G4Material* A2_Li6 = new G4Material( "A2_Li6", z=3., a= 6.0151*g/mole, density= 0.463*g/cm3);
+	G4Material* A2_Li7 = new G4Material( "A2_Li7", z=3., a= 7.0160*g/mole, density= 0.540*g/cm3);
 
   // Extruded Polystyrene
   G4Material* A2_XPS = new G4Material("A2_XPS", 0.03333*g/cm3, 2);

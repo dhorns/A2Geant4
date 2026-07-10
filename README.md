@@ -12,6 +12,10 @@ A2 Geant4 simulation
 
 ## Release notes
 
+### 0.6.0
+July 10, 2026
+* updated to add 1-cm Li-6 and Li-7 targets
+
 ### 0.5.0
 May 28, 2026
 * updated to add CATS
@@ -61,11 +65,11 @@ August 17, 2018
 ## Installation
 
 ### Dependencies
-* Geant4 10.2/10.3/10.4/10.5
-* ROOT 5 or 6
-* CMake 3.3
+* Geant4 11.4
+* ROOT 6.30
+* CMake 3.10
 * Optional: Qt 4 or 5
-* Optional: Pluto 6 (only with ROOT 6, $PLUTOSYS needs to be set)
+* Optional: Pluto 6 ($PLUTOSYS needs to be set)
 
 ### Installation
 

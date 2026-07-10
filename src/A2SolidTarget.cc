@@ -34,6 +34,8 @@ G4VPhysicalVolume* A2SolidTarget::Construct(G4LogicalVolume *MotherLogic, G4doub
   else if(fMaterial==G4NistManager::Instance()->FindOrBuildMaterial("G4_Ca"))trgt_length=1.*cm; 
   else if(fMaterial==G4NistManager::Instance()->FindOrBuildMaterial("G4_GRAPHITE"))trgt_length=1.5*cm; 
   else if(fMaterial==G4NistManager::Instance()->FindOrBuildMaterial("G4_Pb"))trgt_length=0.05*cm; 
+  else if(fMaterial==G4NistManager::Instance()->FindOrBuildMaterial("A2_Li6"))trgt_length=1.*cm; 
+  else if(fMaterial==G4NistManager::Instance()->FindOrBuildMaterial("A2_Li7"))trgt_length=1.*cm;
   else {G4cerr<<"A2SolidTarget::Construct() Solid target length not defined!!"<<G4endl;exit(1);}
   fLength=trgt_length;
   ///////////////////////////
