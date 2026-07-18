@@ -3,6 +3,18 @@
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(A2Geant4)
 
+# check which c++ standard is supported by the compiler
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++20" COMPILER_SUPPORTS_CXX20)
+CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
+if(COMPILER_SUPPORTS_CXX20)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
+  message(STATUS "C++20 will be used")
+elseif(COMPILER_SUPPORTS_CXX17)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+  message(STATUS "C++17 will be used")
+endif()
+
 # workaround for ubuntu: check if gold linker is available and use it
 execute_process(COMMAND ${CMAKE_CXX_COMPILER} -fuse-ld=gold -Wl,--version ERROR_QUIET OUTPUT_VARIABLE LD_VERSION)
 if ("${LD_VERSION}" MATCHES "GNU gold")
