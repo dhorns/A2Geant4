@@ -42,6 +42,12 @@ set(EXT_LIBRARIES)
 # use copied CMake modules from ROOT 6
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
+if(POLICY CMP0188)
+  cmake_policy(SET CMP0188 NEW)
+endif()
+
+set(CMAKE_DISABLE_FIND_PACKAGE_GCCXML TRUE)
+
 # locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
 find_package(ROOT REQUIRED MODULE COMPONENTS MathCore RIO Hist Tree TreePlayer Geom EG)
 
